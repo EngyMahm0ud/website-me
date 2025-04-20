@@ -7,23 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const navLinks = document.querySelectorAll(".nav-links a");
     const logo = document.querySelector(".logo");
     
-    // Hamburger Menu Functionality
-    const hamburgerMenu = document.querySelector(".hamburger-menu");
-    const mobileNav = document.querySelector(".mobile-nav");
-
-    hamburgerMenu.addEventListener("click", () => {
-        hamburgerMenu.classList.toggle("active");
-        mobileNav.style.display = hamburgerMenu.classList.contains("active") ? "flex" : "none";
-    });
-
-    // Close mobile menu when a link is clicked
-    document.querySelectorAll(".mobile-nav a").forEach(link => {
-        link.addEventListener("click", () => {
-            hamburgerMenu.classList.remove("active");
-            mobileNav.style.display = "none";
-        });
-    });
-
     let currentView = "case-studies"; // Track current view
 
     if (!caseStudiesBtn || !uiDesignBtn || !portfolioSection) {
@@ -35,15 +18,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function updatePortfolio(content) {
         portfolioSection.innerHTML = content;
-        // Ensure images are properly loaded
-        const images = portfolioSection.querySelectorAll('img');
-        images.forEach(img => {
-            img.style.opacity = '0'; // Initially hide
-            img.onload = () => {
-                img.style.opacity = '1'; // Show when loaded
-            };
-        });
-        
         // Only apply shadow effect when in case studies mode
         if (currentView === "case-studies") {
             applyShadowEffect();
@@ -65,9 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="case-study-card">
                     <div class="case-study-image-container">
                         <div class="read-time">5 mins read</div>
-                        <div class="case-study-image">
-                            <img src="assets/MacBook13.png" alt="Case Study Preview" style="transition: opacity 0.3s ease;">
-                        </div>
+                        <div class="case-study-image" style="background-image: url('assets/MacBook13.png');"></div>
                     </div>
                     <div class="case-study-content">
                         <h3 class="case-study-title">End-to-End Redesign of Isekai Code's Landing Page</h3>
@@ -81,9 +53,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="case-study-card">
                     <div class="case-study-image-container">
                         <div class="read-time">7 mins read</div>
-                        <div class="case-study-image">
-                            <img src="assets/desktop15.png" alt="Case Study Preview" style="transition: opacity 0.3s ease;">
-                        </div>
+                        <div class="case-study-image" style="background-image: url('assets/desktop15.png');"></div>
                     </div>
                     <div class="case-study-content">
                         <h3 class="case-study-title">Leading the Design of Learn2Earn SaaS Project</h3>
@@ -97,9 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div class="case-study-card">
                     <div class="case-study-image-container">
                         <div class="read-time">4 mins read</div>
-                        <div class="case-study-image">
-                            <img src="assets/Frame 3.png" alt="Case Study Preview" style="transition: opacity 0.3s ease;">
-                        </div>
+                        <div class="case-study-image" style="background-image: url('assets/Frame 3 52.png');"></div>
                     </div>
                     <div class="case-study-content">
                         <h3 class="case-study-title">Supporting the Design of an Engaging IsekaiClinic SaaS Solution</h3>
@@ -268,104 +236,64 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    function adjustFontSizes() {
-        const screenWidth = window.innerWidth;
-        const heroTitle = document.querySelector('.hero-section h1');
-        const heroSection = document.querySelector('.hero-section');
-        const caseStudyTitles = document.querySelectorAll('.case-study-title');
-        const caseStudyDescriptions = document.querySelectorAll('.case-study-description');
+    function getSectionUnderNavbar() {
+        const sections = document.querySelectorAll("section, .hero-section");
+        const navbarHeight = navbar.offsetHeight;
 
-        if (screenWidth <= 768) {
-            // Adjust hero section height and positioning
-            if (heroSection) {
-                heroSection.style.height = '10vh';
-                heroSection.style.minHeight = '500px';
-                heroSection.style.padding = '100px 20px';
-                heroSection.style.borderRadius = '40px';
+        for (let section of sections) {
+            const rect = section.getBoundingClientRect();
+            if (rect.top <= navbarHeight && rect.bottom >= 0) {
+                return section;
             }
+        }
+        return null;
+    }
 
-            // Adjust hero title and info positioning
-            if (heroTitle) {
-                heroTitle.style.position = 'absolute';
-                heroTitle.style.top = '70%';
-                heroTitle.style.transform = 'translateY(-50%)';
-                heroTitle.style.fontSize = '24px';
-            }
+    function getBackgroundColor(element) {
+        return window.getComputedStyle(element).backgroundColor;
+    }
 
-            const heroInfo = document.querySelector('.hero-info');
-            if (heroInfo) {
-                heroInfo.style.position = 'absolute';
-                heroInfo.style.bottom = '-40px';
-                heroInfo.style.left = '20px';
-                heroInfo.style.flexDirection = 'column';
-                heroInfo.style.gap = '10px';
-            }
+    function getBrightness(color) {
+        const rgb = color.match(/\d+/g).map(Number);
+        return (rgb[0] * 0.299 + rgb[1] * 0.587 + rgb[2] * 0.114);
+    }
 
-            // Adjust portfolio section
-            const portfolioSection = document.getElementById('portfolio-section');
-            if (portfolioSection) {
-                portfolioSection.style.transform = 'scale(1)';
-                portfolioSection.style.marginTop = '30px';
-                portfolioSection.style.marginBottom = '0';
-            }
+    function updateNavbarStyle() {
+        const currentSection = getSectionUnderNavbar();
+        if (!currentSection) return;
 
-            // Adjust case study titles and descriptions
-            caseStudyTitles.forEach(title => {
-                title.style.fontSize = '1.3rem';
+        const bgColor = getBackgroundColor(currentSection);
+        const brightness = getBrightness(bgColor);
+
+        if (brightness > 128) {
+            navbar.style.background = "rgba(255, 255, 255, 0.8)"; // Light background
+            navbar.style.color = "black";
+
+            navLinks.forEach(link => {
+                link.style.color = "black";
             });
 
-            caseStudyDescriptions.forEach(desc => {
-                desc.style.fontSize = '1rem';
-            });
+            logo.style.color = "black";
         } else {
-            // Reset styles for larger screens
-            if (heroSection) {
-                heroSection.style.height = '400px';
-                heroSection.style.minHeight = 'auto';
-                heroSection.style.padding = '150px 50px';
-            }
+            navbar.style.background = "rgba(43, 43, 43, 0.8)"; // Dark background
+            navbar.style.color = "rgba(255, 254, 254, 0.8)";
 
-            if (heroTitle) {
-                heroTitle.style.position = 'absolute';
-                heroTitle.style.top = '250px';
-                heroTitle.style.transform = 'none';
-                heroTitle.style.fontSize = '43px';
-            }
-
-            const heroInfo = document.querySelector('.hero-info');
-            if (heroInfo) {
-                heroInfo.style.position = 'absolute';
-                heroInfo.style.top = '530px';
-                heroInfo.style.left = '32px';
-                heroInfo.style.flexDirection = 'row';
-                heroInfo.style.gap = '283px';
-            }
-
-            const portfolioSection = document.getElementById('portfolio-section');
-            if (portfolioSection) {
-                portfolioSection.style.transform = 'scale(0.63)';
-                portfolioSection.style.marginTop = '100px';
-                portfolioSection.style.marginBottom = '-880px';
-            }
-
-            // Reset case study titles and descriptions
-            caseStudyTitles.forEach(title => {
-                title.style.fontSize = '1.70rem';
+            navLinks.forEach(link => {
+                link.style.color = "rgba(206, 206, 206, 0.8)";
             });
 
-            caseStudyDescriptions.forEach(desc => {
-                desc.style.fontSize = '1.2rem';
-            });
+            logo.style.color = "white";
         }
     }
 
-    // Call on page load and resize
-    adjustFontSizes();
-    window.addEventListener('resize', adjustFontSizes);
+    window.addEventListener("scroll", updateNavbarStyle);
+    updateNavbarStyle();
+    applyShadowEffect(); // Apply shadow effect when the page loads
 });
-
 // When the page loads, check if there's a hash in the URL and scroll to it
 document.addEventListener("DOMContentLoaded", () => {
+    // Your existing DOMContentLoaded code here
+    
     // Handle hash navigation more reliably for cross-page navigation
     if (window.location.hash) {
         // A slight delay to ensure everything is rendered

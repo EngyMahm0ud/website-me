@@ -217,14 +217,14 @@ body {
 
 .case-study-image-container {
     position: relative;
-    background: #000000;
+    background: #000000; /* Background behind the image */
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 30px;
-    overflow: hidden; /* Ensure image is clipped to container */
-    height: 615px; /* Fixed height to match card design */
-    width: 100%; /* Full width of the container */
+    overflow: visible; /* Allow shadow to be visible */
+    height: 80%; /* Adjust image container to maintain proportion */
+    z-index: 1;
 }
 
 /* Fixed shadow effect */
@@ -247,18 +247,12 @@ body {
 }
 
 .case-study-image {
-    width: 100%; /* Full width of the container */
-    height: 100%; /* Full height of the container */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    overflow: hidden; /* Prevent image from overflowing */
-}
-.case-study-image img {
-    max-width: 100%; /* Ensure image doesn't exceed container width */
-    max-height: 100%; /* Ensure image doesn't exceed container height */
-    object-fit: contain; /* Ensures entire image is visible and centered */
-    object-position: center; /* Center the image */
+    width: 90%;
+    height: 615px; /* Increased height to match the larger card size */
+    background-size: cover;
+    background-position: center;
+    transition: all 0.2s ease;
+    position: relative;
 }
 
 /* Black overlay */
@@ -457,168 +451,4 @@ footer {
     background-color: #171717;
     align-items: center;
 
-}
-/* Existing CSS remains the same, with these additions at the end */
-
-/* Responsive Navbar and Hamburger Menu */
-@media screen and (max-width: 768px) {
-    .navbar-container {
-        padding: 0 20px;
-    }
-
-    .logo {
-        font-size: 16px;
-        margin-left: 0;
-    }
-
-    .nav-links {
-        display: none;
-    }
-
-    .hamburger-menu {
-        display: flex;
-        flex-direction: column;
-        cursor: pointer;
-    }
-
-    .hamburger-menu .bar {
-        width: 25px;
-        height: 3px;
-        background-color: white;
-        margin: 3px 0;
-        transition: 0.4s;
-    }
-
-    .mobile-nav {
-        display: none;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 100%;
-        background-color: #262626;
-        padding: 20px;
-        z-index: 1000;
-    }
-
-    .mobile-nav a {
-        color: white;
-        padding: 10px 0;
-        text-align: center;
-        border-bottom: 1px solid #333;
-    }
-
-    .mobile-nav a:last-child {
-        border-bottom: none;
-    }
-
-   
-    .case-study-card {
-        width: 100%;
-        height: auto;
-        margin-bottom: 30px;
-    }
-
-    .case-study-image-container {
-        height: 300px;
-    }
-
-    .case-study-title {
-        font-size: 1.3rem;
-    }
-
-    .case-study-description {
-        font-size: 1rem;
-    }
-
-    /* Responsive Grid */
-    .grid-container {
-        grid-template-columns: 1fr;
-        padding: 0 10px;
-    }
-}
-
-/* Hamburger Menu Animations */
-.hamburger-menu.active .bar:nth-child(1) {
-    transform: rotate(-45deg) translate(-5px, 6px);
-}
-
-.hamburger-menu.active .bar:nth-child(2) {
-    opacity: 0;
-}
-
-.hamburger-menu.active .bar:nth-child(3) {
-    transform: rotate(45deg) translate(-5px, -6px);
-}
-/* Responsive adjustments */
-@media screen and (max-width: 768px) {
-    .case-study-image-container {
-        height: 300px; /* Smaller height for mobile */
-    }
-}
-/* Existing CSS remains the same, with these modifications */
-
-@media screen and (max-width: 768px) {
-    .hero-section {
-        padding: 100px 20px;
-        height: 100vh; /* Full viewport height */
-        min-height: 600px; /* Minimum height */
-        position: relative; /* Ensure proper positioning */
-    }
-
-    .hero-section::before {
-        height: 100%; /* Full height of the section */
-        top: 0;
-        border-radius: 0; /* Remove border radius on mobile */
-    }
-
-    .hero-section h1 {
-        position: absolute;
-        top: 50%;
-        transform: translateY(-50%);
-        left: 20px;
-        font-size: 24px;
-        z-index: 10; /* Ensure text is above background */
-    }
-
-    .hero-info {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        flex-direction: column;
-        gap: 10px;
-        z-index: 10; /* Ensure text is above background */
-    }
-
-    .toggle-container {
-        width: calc(100% - 40px); /* Subtract padding */
-        margin: 20px auto; /* Center and add some vertical spacing */
-        position: relative;
-        z-index: 20; /* Ensure it's above other elements */
-    }
-
-    #portfolio-section {
-        transform: scale(1); /* Remove scaling */
-        margin-top: 50px;
-        margin-bottom: 0;
-        padding: 0 20px; /* Add some side padding */
-    }
-
-    .case-study-card {
-        width: 100%;
-        max-width: 100%;
-        margin-bottom: 30px;
-    }
-
-    .case-study-image-container {
-        height: 300px;
-    }
-
-    .case-study-title {
-        font-size: 1.3rem;
-    }
-
-    .case-study-description {
-        font-size: 1rem;
-    }
 }
